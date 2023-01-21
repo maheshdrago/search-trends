@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Search Trends</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@700&family=Poppins&display=swap');
+    
+    *{
+        font-family: 'Poppins', sans-serif;
+    }
+      .apexcharts-gridline{
+        stroke-width: 0px;
+      }
+      #chart {
+        width: 150px;
+        height: 70px;
+      }
+    .apexcharts-xaxistooltip-bottom {
+        display: none;
+    }
+    .apexcharts-grid-borders{
+        display: none;
+    }
+    .search-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        background-color: black;
+        border: 1px solid black;
+        border-radius: 6px;
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 40px;
+        padding: 12px;
+    }
+    #input-container {
+        width: 300px;
+        position: relative;
+    }
+
+    #input-field {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        resize:vertical;
+        overflow: hidden;
+        z-index: 1000;
+        transition: height 0.2s ease;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 10px;
+        margin-right: 6px;
+    }
+    #analyze-btn{
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 6px;
+        color:black;
+        background-color: white;
+        margin-left: 6px;
+    }
+    #countries{
+        margin-left: 6px;
+        border: 1px solid white;
+        border-radius: 6px;
+    }
+    .td-data-div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    .progress{
+        width: 50%;
+        margin-top: 4px;
+    }
+    .main-wrapper{
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        box-shadow: 0 1px 11px 0 rgb(181, 181, 181);
+        overflow: auto;
+    }
+    .container{
+        margin-top: 20px !important ;
+        width: 100%;
+    }
+    .main-wrapper input {
+        border: none !important;
+        overflow: auto !important;
+        outline: none;
+        padding: 14px !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+
+    }
+    .btn-primary{
+        background-color: #3b8ffc;
+        border: 1px solid #3b8ffc;
+    }
+    .btn-primary:hover{
+        background-color: #4294ff;
+        border: 1px solid #4294ff;
+    }
+    
+    
+
+    .links{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .links a{
+        text-decoration: underline;
+        color: black;
+        margin-right: 16px;
+        font-size: 11px;
+    }
+
+    @media (max-width:700px){
+        .links {
+            display: none;
+        }
+        body{
+            margin-top: 9px;
+        }
+    }
+
+    .navbar-links {
+        height: 80%;
+        margin-left: 20vw;
+        width: 70%;
+    }
+
+.navbar-links ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 8px;
+}
+
+.navbar-links li {
+    list-style: none;
+}
+
+.navbar-links li a {
+    white-space: nowrap;
+    display: inline;
+    text-decoration: none;
+    color: black;
+    padding: 1rem;
+}
+
+
+
+.toggle-button {
+    top: .75rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar {
+    height: 3px;
+    width: 100%;
+    background-color: black;
+    border-radius: 10px;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .toggle-button {
+        display: block;
+        float: right;
+    }
+
+    .navbar-links {
+        display: none;
+        width: 100%;
+        margin-left: 0px;
+    }
+
+    .navbar-links ul {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navbar-links ul li {
+        text-align: center;
+    }
+
+    .navbar-links ul li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links li:hover {
+    background-color: rgb(207, 206, 206);
+}
+    .navbar-links.active {
+        display: flex;
+    }
+}
+.bg-success{
+    background-color: #03C988;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="main-wrapper" style="overflow: hidden;">
+        <div class="header-div">
+            <div class="links">     
+                <p><a href="https://www.deepawaliseotips.com/about-us/">About us</a></p>
+                <p><a href="https://www.deepawaliseotips.com/digital-marketing-and-seo-consultancy-services-pavan-agrawal/">SEO Consultancy Services</a></p>
+                <p><a href="https://www.deepawaliseotips.com/privacy-policy/">Privacy Policy</a></p>
+                <p><a href="https://www.deepawaliseotips.com/disclaimer/">Disclaimer</a></p>
+                <p><a href="https://www.deepawaliseotips.com/terms-conditions/">Terms & Conditions</a></p>
+                <p><a href="https://www.deepawaliseotips.com/contact-us/">Contact Us</a></p>
+            </div>
+            <div class="title">
+                <center>
+                    <h1 style="font-family: serif;font-size: 5vw;">SEO Pavan Agrawal</h1>
+                    <span class="td-tagline-text">Remember Observe and React</span>
+                </center>
+                <hr>
+                <a href="#" class="toggle-button" style="float: right;">
+                    <span><i class="bi bi-list"></i></span>
+                </a>
+                <br>
+            </div>
+            <nav class="navbar">
+                
+                <div class="navbar-links">
+                    <ul>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/"><b>HOME</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/category/start-a-blog/"><b>START A BLOG</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/category/hosting/"><b>HOSTING</b></a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/tools/"><b>TOOLS [PAVAN AGRAWAL]</b></a>
+                        </li>
+                        <li>
+                            <a href="https://twittertrends.deepawaliseotips.com/"><b>TWITTER TRENDS</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/schema-generator-tool.html"><b>SCHEMA GENERATOR</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/domain-age.html/"><b>DOMAIN AGE</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/keyword-generator.html/"><b>KEYWORD RESEARCH</b></a>
+                        </li>
+                        <li>
+                            <a href="https://www.deepawaliseotips.com/related-keywords.html/"><b>RELATED KEYWORDS</b></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        </div>
+    <br>
+    <div class="container">
+        <div class="search-container">
+            <div id="input-container">
+                <textarea id="input-field" rows="1"></textarea>
+            </div>
+            <select name="Worldwide" id="countries">
+                <option value="" >Worldwide</option>
+            </select> 
+            <button id='analyze-btn' onclick="getData(0)">Analyze</button>              
+        </div>
+        <div class="meta-data" id="meta-data" style="display: flex;flex-direction: row;width:30%;justify-content: space-evenly;display: none;">
+            <div class="from" style="display: flex;flex-direction: column;justify-content: flex-start;">
+                <span style="color: teal;margin-bottom: 4px;">From</span>
+                <span id="from" style="font-size: small;"></span>
+            </div>
+            <div class="to" style="display: flex;flex-direction: column;justify-content: flex-start;">
+                <span style="color: teal;margin-bottom: 4px;">To</span>
+                <span id="to" style="font-size: small;"></span>
+            </div>
+            <div class="country" style="display: flex;flex-direction: column;justify-content: flex-start;">
+                <span style="color: teal;margin-bottom: 4px;">Country</span>
+                <span id="country" style="font-size: small;"></span>
+            </div>
+
+        </div>
+        <br>
+        <table class="table" id="tb">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">Keyword</th>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">Interest Over Time</th>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">Interest Today</th>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">Weekly Change</th>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">Monthly Change</th>
+                    <th scope="col" class="col-md-auto" style="font-weight:100 !important;">YTD Change</th>
+                </tr>
+            </thead>
+            <tbody id="t-body">
+            </tbody>
+            
+        </table>
+        <center>
+            <div class="spinner-grow" id="spin" style="width: 3rem; height: 3rem;display: none;" role="status" >
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </center>
+        
+        <span id="no-data"></span>
+    </div>
+
+    <div class="main-wrapper" style="padding: 20px;width: 80% !important;justify-content: center !important;margin: 0 auto;margin-top: 40px;">
+        <h3>What is Search Trends Table Generator?</h3>
+        <p>
+            Search Trends Table Generator is a tool that allows you to quickly and easily track and analyze search trends for a specific keyword or phrase. It allows you to generate a table of data that shows the historic trend for your chosen keyword over a specified time period. The tool also allows you to compare the performance of different keywords, and track changes over time.
+        </p>
+        <h3>How to use the Search Trends Table Generator</h3>
+        <p>
+            Using the Search Trends Table Generator is simple and straightforward. First, you will need to enter your keyword or phrase in the search field. Next, you will be selecting the country to track the search trends for a specific geographic area. Once you have entered all the necessary information, you can generate your table by clicking on the "Analyze" button.
+        </p>
+        <h3>What can you do with the data generated by the Search Trends Table Generator?</h3>
+        <p>
+            The data generated by the Search Trends Table Generator can be used for a variety of purposes, such as:
+            <ul>
+                <li>Tracking changes in search volume and competition over time.</li>
+                <li>Comparing the performance of different keywords and phrases.</li>
+                <li>Identifying opportunities for optimization and improvement of your website's search engine optimization (SEO).</li>
+                <li>Determining the most effective keywords to target for your content and advertising campaigns.</li>
+            </ul>
+        </p>
+        <h3>Tips for using the Search Trends Table Generator</h3>
+        <p>
+            <ul>
+                <li>Make sure to select an appropriate location, so that you can see the trends over time.</li>
+                <li>Compare the data for different keywords and phrases to identify opportunities for optimization and improvement.</li>
+                <li>Use the data generated by the tool to guide your content and advertising campaigns.</li>
+            </ul>
+        </p>
+        <h3>Conclusion</h3>
+        <p>
+            The Search Trends Table Generator is a powerful tool that can help you track and analyze search trends for a specific keyword or phrase. It allows you to generate a table of data that shows the search volume and competition for your chosen keyword over a specified time period. By using the data generated by the tool, you can identify opportunities for optimization and improvement of your website's SEO, and determine the most effective keywords to target for your content and advertising campaigns. Remember to select an appropriate time period, compare the data for different keywords.
+
+        </p>
+
+    </div>
+  </body>
+    <script>
+    let updated_data;
+    let table_rows = [];
+    let country = '';
+    
+
+    const toggleButton = document.getElementsByClassName('toggle-button')[0]
+    const navbarLinks = document.getElementsByClassName('navbar-links')[0]
+        toggleButton.addEventListener('click', () => {
+        navbarLinks.classList.toggle('active')
+    })
+
+    window.onload = () => {
+        const inputField = document.getElementById("input-field");
+        inputField.textContent = "hugo boss\ntesla\ntesla model 3"
+
+        const select = document.getElementById("countries");
+        fetch("https://restcountries.com/v2/all")
+            .then(response => response.json())
+            .then(countries => {
+                for (const country of countries) {
+                    const option = document.createElement("option");
+                    option.value = country.alpha2Code;
+                    option.text = country.name;
+                    select.appendChild(option);
+                }
+        });
+        getData(1)
+    }
+
+    const select = document.getElementById("countries");
+    select.addEventListener("change", () => {
+        country = select.value;
+    });
+    
+    const inputField = document.getElementById("input-field");
+        // Listen for click events on the input field
+    inputField.addEventListener("click", function() {
+        inputField.rows = 5;
+    });
+
+    document.addEventListener("click", function(event) {
+        if (event.target !== inputField) {
+            inputField.rows = 1;
+        }
+    });
+
+    const fetchDataOfKeyword = (keyword) => {
+        return fetch('https://deepawali-api-test.up.railway.app/historicData',{
+        method:'Post',
+        mode: 'cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+                'keywords':keyword,
+                'country':country
+            }
+        )
+      })
+      .then(response=>response.json())
+      
+    }
+
+
+    const getData = async (initial)=>{
+        document.getElementById('spin').style.display = 'block'
+        document.getElementById('t-body').innerHTML = ''
+
+        if(initial==1){
+            var keywords_arr = ['hugo boss','tesla','tesla model 3'];
+        }
+        else{
+            console.log(initial)
+            var keywords = document.getElementById('input-field').value;
+            var keywords_arr = keywords.split('\n').map(ele=>ele.trim())
+        }
+        
+        let promises = [];
+
+        for(let i of keywords_arr){
+            promises.push(fetchDataOfKeyword(i));
+        }
+        
+        Promise.all(promises)
+        .then(keyword_data => {
+            document.getElementById('spin').style.display = 'none'
+            var idx = 0;
+            for(let response_data of keyword_data){
+                
+                if(response_data['data'].length===0)
+                    document.getElementById('no-data').innerHTML = '<center><b>No Data Found!</b></center>';
+                else{
+                    let visual_data = [];
+                    document.getElementById('from').innerHTML = response_data['data']['three']
+                    document.getElementById('to').innerHTML = response_data['data']['current']
+                    document.getElementById('country').innerHTML = country===''?'Worldwide':country
+
+                for(let i in response_data['data']['daily_data']){
+                    visual_data.push({x: new Date(i), y: response_data['data']['daily_data'][i]})
+                }
+                // Create a new table row element
+                let row = document.createElement('tr');
+
+                // Create a new td element for the keyword
+                let keywordTd = document.createElement('td');
+                keywordTd.classList.add('col-md-auto');
+                keywordTd.style.transform = "translate(15px, 20px)";
+                keywordTd.innerText = response_data['data']['keyword'][0];
+
+                // Create a new td element for the chart
+                let chartTd = document.createElement('td');
+                chartTd.classList.add('col-md-auto');
+                let chartDiv = document.createElement('div');
+                chartDiv.id = 'chart-' + idx;
+                chartTd.appendChild(chartDiv);
+
+                // Create the other td elements for the rest of the data
+                let todayInterestTd = document.createElement('td');
+                todayInterestTd.classList.add('col-md-auto');
+                todayInterestTd.style.transform = "translate(-10px, 20px)";
+                let day = Number(response_data['data']['today_interest']);
+                todayInterestTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            
+                                            <span>${day}</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style="width: ${100}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+
+                let weekDifferenceTd = document.createElement('td');
+                weekDifferenceTd.classList.add('col-md-auto');
+                weekDifferenceTd.style.transform = "translate(-10px, 20px)";
+                
+                let week_diff = Number(response_data['data']['week_difference']);
+                if(week_diff<0)
+                    weekDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-down text-danger"></i>
+                                            <span>${week_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-label="Basic example" style="width: ${Math.abs(week_diff)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+                else
+                    weekDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-up text-success"></i>
+                                            <span>${week_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style="width: ${week_diff}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+
+
+                let monthDifferenceTd = document.createElement('td');
+                monthDifferenceTd.classList.add('col-md-auto');
+                monthDifferenceTd.style.transform = "translate(-10px, 20px)";
+                monthDifferenceTd.innerHTML = Number(response_data['data']['monthly_difference']);
+                let month_diff = Number(response_data['data']['monthly_difference']);
+                if(month_diff<0)
+                    monthDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-down text-danger"></i>
+                                            <span>${month_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-label="Basic example" style="width: ${Math.abs(month_diff)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+                else
+                    monthDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-up text-success"></i>
+                                            <span>${month_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style="width: ${month_diff}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+
+                let yearDifferenceTd = document.createElement('td');
+                yearDifferenceTd.classList.add('col-md-auto');
+                yearDifferenceTd.style.transform = "translate(-10px, 20px)";
+                let year_diff = Number(response_data['data']['yearly_difference']);
+                if(year_diff<0)
+                    yearDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-down text-danger"></i>
+                                            <span>${year_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-label="Basic example" style="width: ${Math.abs(year_diff)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+                else
+                    yearDifferenceTd.innerHTML = `
+                                            <div class='td-data-div'>
+                                            <i class="bi bi-arrow-up text-success"></i>
+                                            <span>${year_diff}%</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style="width: ${year_diff}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            </div>
+                                            `;
+
+                // Append all the td elements to the row
+                row.appendChild(keywordTd);
+                row.appendChild(chartTd);
+                row.appendChild(todayInterestTd);
+                row.appendChild(weekDifferenceTd);
+                row.appendChild(monthDifferenceTd);
+                row.appendChild(yearDifferenceTd);
+                // Append the row to the table body
+                document.getElementById('t-body').appendChild(row);
+
+                setData(visual_data, 'chart-'+idx);
+                idx++;
+
+                }
+                
+            }   
+            document.getElementById('meta-data').style.display = 'flex'
+            
+        })  
+    }
+    
+     
+      const setData = (data, id)=>{
+        
+        let highestValue = -Infinity;
+        let highestIndex = -1;
+        let lowestValue = Infinity;
+        let lowestIndex = -1;
+
+        // Iterate through the data
+        for (let i = 0; i < data.length; i++) {
+            
+            if (data[i].y > highestValue) {
+                highestValue = data[i].y;
+                highestIndex = i;
+            }
+            if (data[i].y < lowestValue) {
+                lowestValue = data[i].y;
+                lowestIndex = i;
+            }
+        }
+        var chart = new ApexCharts(document.getElementById(id), {
+            series: [{
+                name: 'Data',
+                data: data,
+                type: 'line',
+            }],
+            markers: {
+                discrete: [{
+                    seriesIndex: 0,
+                    dataPointIndex: lowestIndex,
+                    fillColor: '#e84f41',
+                    strokeColor: '#fff',
+                    size: 4,
+                    shape: "circle" // "circle" | "square" | "rect"
+                }, {
+                    seriesIndex: 0,
+                    dataPointIndex: highestIndex,
+                    fillColor: '#08c224',
+                    strokeColor: '#fff',
+                    size: 4,
+                    shape: "circle" // "circle" | "square" | "rect"
+                }]
+            },
+
+            stroke: {
+                width: 3
+            },
+            chart: {
+                type: 'line',
+                width: '70%',
+                height: '50%',
+                toolbar: false,
+                dropShadow: {
+                    enabled: true,
+                    enabledOnSeries: undefined,
+                    top: 1,
+                    left: 1,
+                    blur: 0,
+                    color: '#000',
+                    opacity: 0.2
+                },
+                grid: {
+                    show:false,
+                    xaxis: {
+                        lines: {
+                        show: false
+                        }
+                    },  
+                    yaxis: {
+                        lines: { 
+                        show: false
+                        }
+                    }, 
+                },
+            },
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    format: 'dd MMM yyyy',
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                },
+                theme:'dark',
+                enabled: true,
+            }
+        });
+
+        chart.render();
+
+}
+
+      
+    </script>
+  </body>
+</html>
